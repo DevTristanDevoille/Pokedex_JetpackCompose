@@ -1,3 +1,6 @@
+.idea/**
+src/.idea/**
+
 # Compiled class file
 *.class
 
