@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">PokedexCompose</string>
+
+
+    <!-- Pokemons -->
+    <string name="pokemons">Pokemons</string>
+    <string name="loading_pokemons">Chargement des pokemons</string>
+    <string name="search_pokemon">Recherchez un pokemon</string>
+
+
+
+
+    <!-- Errors -->
+    <string name="error_occured">Une erreur est survenue</string>
+    <string name="error_network">Erreur réseau, vérifier votre connexion internet puis réessayez</string>
+    <string name="error_character_not_found">Le personnage est introuvable</string>
+    <string name="error_occured_code">Une erreur est survenue (code %1$d)</string>
+
+
 </resources>

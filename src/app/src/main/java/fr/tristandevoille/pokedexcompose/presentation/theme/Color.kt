@@ -1,4 +1,4 @@
-package fr.tristandevoille.pokedexcompose.ui.theme
+package fr.tristandevoille.pokedexcompose.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
