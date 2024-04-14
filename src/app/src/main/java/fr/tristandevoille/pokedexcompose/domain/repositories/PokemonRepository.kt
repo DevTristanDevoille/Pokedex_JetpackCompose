@@ -10,5 +10,5 @@ interface PokemonRepository {
     suspend fun getPokemonList(): List<PokemonListModel>
 
     @Throws(HttpException::class, UnknownHostException::class)
-    suspend fun synchronizeCharacters()
+    suspend fun synchronizePokemons()
 }

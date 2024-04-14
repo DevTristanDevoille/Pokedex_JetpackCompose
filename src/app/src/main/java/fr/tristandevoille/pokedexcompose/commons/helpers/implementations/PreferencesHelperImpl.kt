@@ -13,6 +13,10 @@ class PreferencesHelperImpl(context : Context = get(Context::class.java)) : Base
 
     companion object {
         private const val PREFERENCES = "preferences"
-        private const val LOCATIONS_SYNCHRONIZATION_SYNC_DONE = "locations_synchronization_sync_done"
+        private const val POKEMONS_SYNCHRONIZATION_SYNC_DONE = "pokemons_synchronization_sync_done"
     }
+
+    override var pokemonsSynchronized: Boolean
+        get() = getValue(POKEMONS_SYNCHRONIZATION_SYNC_DONE,false)
+        set(value) = setValue(POKEMONS_SYNCHRONIZATION_SYNC_DONE, value)
 }

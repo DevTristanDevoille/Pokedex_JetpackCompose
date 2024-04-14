@@ -65,7 +65,10 @@ fun PokemonsScreen(uiState : PokemonsUiState, onEvent : (PokemonsEvent) -> Unit)
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(uiState.pokemons){ pokemon ->
+                items(uiState.pokemons.filter {
+                    it.name.contains(uiState.query, ignoreCase = true) ||
+                    it.id.toString().contains(uiState.query, ignoreCase = true)
+                }){ pokemon ->
                     PokemonsItem(
                         modifier = Modifier.fillMaxWidth(),
                         name = pokemon.name,
@@ -97,8 +100,9 @@ private fun PokemonsScreenPreview(){
         PokemonsScreen(
             uiState = PokemonsUiState(pokemons = listOf(
                 PokemonListModel(
-                    id = "1",
-                    name = "Bulbasaur",
+                    id = 1,
+                    name = "bulbasaur",
+                    url = ""
                 )
             )),
             onEvent = {}

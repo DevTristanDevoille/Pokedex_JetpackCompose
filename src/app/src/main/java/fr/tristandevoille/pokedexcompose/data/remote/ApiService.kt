@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("pokemon?limit=100000")
-    suspend fun getCharacters(@Query("page") page : Int): BaseDtoDown<PokemonDtoDown>
+    @GET("pokemon")
+    suspend fun getPokemons(@Query("offset") offset : Int): BaseDtoDown<PokemonDtoDown>
 
 }

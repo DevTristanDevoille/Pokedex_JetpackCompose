@@ -69,29 +69,29 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    // Dependency injection with Koin
-    implementation(libs.koin.core)
+    // Koin for dependency injection
     implementation(libs.koin.android)
+    implementation(libs.koin.core)
 
-    // Navigation
+    // Coil for async images
+    implementation(libs.coil)
+
+    // Navigation and lifecycle
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Coil
-    implementation("io.coil-kt:coil:2.5.0")
-    implementation("io.coil-kt:coil-compose:2.5.0")
-    implementation("io.coil-kt:coil-gif:2.3.0")
-    //implementation(libs.coil.compose) Marche pas ?
-
-    // Room for database
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.room.ktx)
 
     // Retrofit for API calls
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp) // To create requests interceptors
     implementation(libs.logging.interceptor) // Logging interceptor
+
+    // Lib of components
+    //implementation(libs.composents) // Logging interceptor
+
+    // Room for database
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.room.ktx)
 }

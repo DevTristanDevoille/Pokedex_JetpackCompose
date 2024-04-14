@@ -24,7 +24,7 @@ import coil.request.ImageRequest
 fun PokemonsItem(
     modifier : Modifier = Modifier,
     name: String,
-    id: String,
+    id: Long,
     onClick : () -> Unit = { }
 ){
     Button(
@@ -65,6 +65,6 @@ private fun PokemonsItemPreview() = PreviewComponents {
     PokemonsItem(
         modifier = Modifier.fillMaxWidth(),
         name = "Bulbasaur",
-        id = "1",
+        id = 1,
     )
 }

@@ -1,6 +1,7 @@
 package fr.tristandevoille.pokedexcompose
 
 import android.app.Application
+import androidx.room.Room
 import fr.tristandevoille.pokedexcompose.commons.helpers.ErrorHelper
 import fr.tristandevoille.pokedexcompose.commons.helpers.NavigationHelper
 import fr.tristandevoille.pokedexcompose.commons.helpers.PreferencesHelper
@@ -9,10 +10,13 @@ import fr.tristandevoille.pokedexcompose.commons.helpers.implementations.ErrorHe
 import fr.tristandevoille.pokedexcompose.commons.helpers.implementations.NavigationHelperImpl
 import fr.tristandevoille.pokedexcompose.commons.helpers.implementations.PreferencesHelperImpl
 import fr.tristandevoille.pokedexcompose.commons.helpers.implementations.ResourcesHelperImpl
+import fr.tristandevoille.pokedexcompose.data.local.ApplicationDatabase
+import fr.tristandevoille.pokedexcompose.data.local.dao.PokemonDao
 import fr.tristandevoille.pokedexcompose.data.remote.ApiClient
-import fr.tristandevoille.pokedexcompose.data.remote.repositories.PokemonRepositoryImpl
+import fr.tristandevoille.pokedexcompose.data.repositories.PokemonRepositoryImpl
 import fr.tristandevoille.pokedexcompose.domain.repositories.PokemonRepository
 import fr.tristandevoille.pokedexcompose.domain.usecases.GetPokemonListUseCase
+import fr.tristandevoille.pokedexcompose.domain.usecases.SynchronizePokemonsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -21,11 +25,11 @@ import org.koin.dsl.module
 
 class ApplicationController : Application() {
 
-    /*private val database: ApplicationDatabase by lazy {
-        Room.databaseBuilder(this, ApplicationDatabase::class.java, "PokedexCompose")
+    private val database: ApplicationDatabase by lazy {
+        Room.databaseBuilder(this, ApplicationDatabase::class.java, "pokedex")
             .fallbackToDestructiveMigration() // If migrations needed delete all data and clear schema
             .build()
-    }*/
+    }
 
     private val applicationModule = module {
         // Helpers
@@ -36,11 +40,13 @@ class ApplicationController : Application() {
 
         // UseCases
         single { GetPokemonListUseCase() }
+        single { SynchronizePokemonsUseCase() }
 
         // Repositories
-        single<PokemonRepository> { PokemonRepositoryImpl(get(),get()) }
+        single<PokemonRepository> { PokemonRepositoryImpl() }
 
         // Dao
+        single { database.pokemonDao() }
 
         // Remote
         single { ApiClient.apiService }
