@@ -12,7 +12,7 @@ interface PokemonDao {
     suspend fun getPokemons(): List<PokemonEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(pokemonEntities : List<PokemonEntity>)
+    suspend fun insertOrUpdate(pokemonEntity : PokemonEntity)
 
     @Query("DELETE FROM pokemonentity")
     suspend fun nuke()

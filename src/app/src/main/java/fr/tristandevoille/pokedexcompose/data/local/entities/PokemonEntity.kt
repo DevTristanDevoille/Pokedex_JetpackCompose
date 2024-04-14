@@ -8,5 +8,10 @@ data class PokemonEntity (
     @PrimaryKey
     val id : Long,
     val name : String,
-    val url : String
+    val baseExperience : String?,
+    val height : String,
+    val isDefault : Boolean,
+    val locationAreaEncounters : String,
+    val order : Long,
+    val weight : Long
 )

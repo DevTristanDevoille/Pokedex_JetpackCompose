@@ -101,8 +101,7 @@ private fun PokemonsScreenPreview(){
             uiState = PokemonsUiState(pokemons = listOf(
                 PokemonListModel(
                     id = 1,
-                    name = "bulbasaur",
-                    url = ""
+                    name = "bulbasaur"
                 )
             )),
             onEvent = {}

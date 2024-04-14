@@ -21,23 +21,24 @@ class PokemonRepositoryImpl(
 
         pokemonDao.nuke()
 
-        var offset = 0
-        var again = true
+        var index = 1
 
-        while (again){
-            val pokemonsDto = apiService.getPokemons(offset)
-            again = pokemonsDto.next != null
+        val pokemonsDto = apiService.getPokemons()
 
-            offset += 20
+        while (index < pokemonsDto.results.count()){
+            val pokemonDto = apiService.getPokemon(pokemonsDto.results[index++].url.replace("https://pokeapi.co/api/v2/pokemon/","").replace("/","").toInt())
 
-            val pokemonsEntity = pokemonsDto.results.map {
-                PokemonEntity(
-                    id = it.url.replace("https://pokeapi.co/api/v2/pokemon/","").replace("/","").toLong(),
-                    name = it.name,
-                    url = it.url
-                )
-            }
-            pokemonDao.insertOrUpdate(pokemonsEntity)
+            val pokemonEntity = PokemonEntity(
+                id = pokemonDto.id,
+                name = pokemonDto.name,
+                baseExperience = pokemonDto.baseExperience,
+                height = pokemonDto.height,
+                order = pokemonDto.order,
+                isDefault = pokemonDto.isDefault,
+                locationAreaEncounters = pokemonDto.locationAreaEncounters,
+                weight = pokemonDto.weight
+            )
+            pokemonDao.insertOrUpdate(pokemonEntity)
         }
         preferencesHelper.pokemonsSynchronized = true
     }
@@ -51,7 +52,6 @@ class PokemonRepositoryImpl(
             PokemonListModel(
                 id = it.id,
                 name = it.name,
-                url = it.url
             )
         }
 
