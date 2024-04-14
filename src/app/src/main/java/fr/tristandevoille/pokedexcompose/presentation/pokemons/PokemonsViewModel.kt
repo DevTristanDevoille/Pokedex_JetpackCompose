@@ -9,7 +9,9 @@ import fr.tristandevoille.pokedexcompose.commons.helpers.NavigationHelper
 import fr.tristandevoille.pokedexcompose.commons.helpers.ResourcesHelper
 import fr.tristandevoille.pokedexcompose.domain.models.Resource
 import fr.tristandevoille.pokedexcompose.domain.usecases.GetPokemonListUseCase
+import fr.tristandevoille.pokedexcompose.domain.usecases.GetTypeListUseCase
 import fr.tristandevoille.pokedexcompose.domain.usecases.SynchronizePokemonsUseCase
+import fr.tristandevoille.pokedexcompose.domain.usecases.SynchronizeTypesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +21,9 @@ import org.koin.java.KoinJavaComponent.get
 
 class PokemonsViewModel(
     private val getPokemonListUseCase: GetPokemonListUseCase = get(GetPokemonListUseCase::class.java),
+    private val getTypeListUseCase: GetTypeListUseCase = get(GetTypeListUseCase::class.java),
     private val synchronizePokemonsUseCase: SynchronizePokemonsUseCase = get(SynchronizePokemonsUseCase::class.java),
+    private val synchronizeTypesUseCase: SynchronizeTypesUseCase = get(SynchronizeTypesUseCase::class.java),
     private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java),
     private val errorHelper: ErrorHelper = get(ErrorHelper::class.java),
     private val resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java),
@@ -31,7 +35,7 @@ class PokemonsViewModel(
     fun onEvent(event: PokemonsEvent){
         when(event){
             is PokemonsEvent.LoadPokemons ->{
-                loadPokemons()
+                loadTypes()
             }
             is PokemonsEvent.OnQueryChanged -> {
                 _uiState.update { it.copy(query = event.query) }
@@ -42,18 +46,32 @@ class PokemonsViewModel(
         }
     }
 
-    private fun loadPokemons(){
-        viewModelScope.launch {
-            _uiState.update { it.copy(loading = true, loadingMessage = resourcesHelper.getString(R.string.loading_pokemons)) }
+    private fun loadTypes(){
+        viewModelScope.launch{
+            _uiState.update { it.copy(loading = true, loadingMessage = resourcesHelper.getString(R.string.loading_types)) }
 
-            when(val result = synchronizePokemonsUseCase()){
+            when(val result = synchronizeTypesUseCase()){
                 is Resource.Success -> {
-                    getPokemons()
+                    _uiState.update { it.copy(loading = true, loadingMessage = resourcesHelper.getString(R.string.loading_pokemons)) }
+                    loadPokemons()
                 }
                 is Resource.Error -> {
                     errorHelper.showError(result.message)
                     _uiState.update { it.copy(loading = false) }
                 }
+            }
+
+        }
+    }
+
+    private suspend fun loadPokemons(){
+        when(val result = synchronizePokemonsUseCase()){
+            is Resource.Success -> {
+                getPokemons()
+            }
+            is Resource.Error -> {
+                errorHelper.showError(result.message)
+                _uiState.update { it.copy(loading = false) }
             }
         }
     }

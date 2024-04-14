@@ -16,14 +16,14 @@ class PokemonRepositoryImpl(
 
     override suspend fun synchronizePokemons(){
 
-        if (preferencesHelper.pokemonsSynchronized)
+        if (preferencesHelper.pokemonTotal != 0 && pokemonDao.getPokemons().count() == preferencesHelper.pokemonTotal)
             return
 
-        pokemonDao.nuke()
+        var index = 0
 
-        var index = 1
+        val pokemonsDto = apiService.getPokemons(preferencesHelper.pokemonOffset,preferencesHelper.pokemonLimit)
 
-        val pokemonsDto = apiService.getPokemons()
+        preferencesHelper.pokemonTotal = pokemonsDto.count
 
         while (index < pokemonsDto.results.count()){
             val pokemonDto = apiService.getPokemon(pokemonsDto.results[index++].url.replace("https://pokeapi.co/api/v2/pokemon/","").replace("/","").toInt())
@@ -40,7 +40,7 @@ class PokemonRepositoryImpl(
             )
             pokemonDao.insertOrUpdate(pokemonEntity)
         }
-        preferencesHelper.pokemonsSynchronized = true
+        preferencesHelper.pokemonOffset += 100
     }
 
 

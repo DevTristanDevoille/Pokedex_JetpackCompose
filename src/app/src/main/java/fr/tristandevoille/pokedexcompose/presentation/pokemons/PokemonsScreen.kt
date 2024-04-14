@@ -63,7 +63,7 @@ fun PokemonsScreen(uiState : PokemonsUiState, onEvent : (PokemonsEvent) -> Unit)
             LazyColumn(
                 state = scrollState,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(uiState.pokemons.filter {
                     it.name.contains(uiState.query, ignoreCase = true) ||
@@ -76,6 +76,8 @@ fun PokemonsScreen(uiState : PokemonsUiState, onEvent : (PokemonsEvent) -> Unit)
                     ){
                         //onEvent(PokemonsEvent.OnPokemonSelected)
                     }
+                    if (pokemon.id == uiState.pokemons.last().id)
+                        onEvent(PokemonsEvent.LoadPokemons)
                 }
             }
         }

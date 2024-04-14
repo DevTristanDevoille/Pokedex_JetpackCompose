@@ -8,7 +8,8 @@
     <string name="search_pokemon">Recherchez un pokemon</string>
 
 
-
+    <!--Types -->
+    <string name="loading_types">Chargement des types</string>
 
     <!-- Errors -->
     <string name="error_occured">Une erreur est survenue</string>

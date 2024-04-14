@@ -14,9 +14,13 @@ import fr.tristandevoille.pokedexcompose.data.local.ApplicationDatabase
 import fr.tristandevoille.pokedexcompose.data.local.dao.PokemonDao
 import fr.tristandevoille.pokedexcompose.data.remote.ApiClient
 import fr.tristandevoille.pokedexcompose.data.repositories.PokemonRepositoryImpl
+import fr.tristandevoille.pokedexcompose.data.repositories.TypeRepositoryImpl
 import fr.tristandevoille.pokedexcompose.domain.repositories.PokemonRepository
+import fr.tristandevoille.pokedexcompose.domain.repositories.TypeRepository
 import fr.tristandevoille.pokedexcompose.domain.usecases.GetPokemonListUseCase
+import fr.tristandevoille.pokedexcompose.domain.usecases.GetTypeListUseCase
 import fr.tristandevoille.pokedexcompose.domain.usecases.SynchronizePokemonsUseCase
+import fr.tristandevoille.pokedexcompose.domain.usecases.SynchronizeTypesUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -41,12 +45,16 @@ class ApplicationController : Application() {
         // UseCases
         single { GetPokemonListUseCase() }
         single { SynchronizePokemonsUseCase() }
+        single { GetTypeListUseCase() }
+        single { SynchronizeTypesUseCase() }
 
         // Repositories
         single<PokemonRepository> { PokemonRepositoryImpl() }
+        single<TypeRepository> { TypeRepositoryImpl() }
 
         // Dao
         single { database.pokemonDao() }
+        single { database.typeDao() }
 
         // Remote
         single { ApiClient.apiService }
